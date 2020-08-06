@@ -1,0 +1,53 @@
+**************************************************************************************************
+                                        ONSJHJSA
+**************************************************************************************************
+
+==> Project structure for RESTful Webservices.
+
+-> Create Spring Initializer project. Provide appropriate groupID, ArtifactID (all lower case).
+-> Select "Web" in dependencies as it requires web dependencies to create Spring MVC and RESTful api project.
+
+==> Create HelloWorld program:
+
+-> To Run any program on Spring Boot, RestController is needed. RestController is front controller which takes care of all the
+    web requests.
+-> Create a package "Controller" -> Java class "Hello World".
+For Eg:
+
+        @RestController
+        public class HelloWorld {
+
+            @RequestMapping("/")
+            public String getHelloWorld(){
+                return "Hello World";
+            }
+        }
+
+-> HelloWorld class should be annotated with "@RestController" annotation.
+-> Method getHelloWorld return String "Hello World".
+
+=> IMP: Method needs to map with web URL. To achieve this, Dev needs to use
+
+    @RequestMapping("/") : Here "/" represent normal URL.
+
+    [
+        In our case server start at port 8080. So our URL would be localhost:8080.
+        In my machine, port 8080 is used by other application. We can switch different port in "resources -> application.properties"
+        server.port=8084
+    ]
+
+==> Type: localhost:8084 will return Hello World.
+
+==> Dev can map URI (string at the end URL) for different requests. Dev used "/api" in @RequestMapping annotation.
+
+        @RequestMapping("/api")
+        public String getString(){
+            return "Use of URI - api";
+        }
+
+        localhost:8084/api : will return "Use of URI - api";
+
+===========================================================================================================================
+
+
+

@@ -11,4 +11,9 @@ public class HelloWorld {
         return "Hello World";
     }
 
+    @RequestMapping("/api")
+    public String getString(){
+        return "Use of URI - api";
+    }
+
 }
