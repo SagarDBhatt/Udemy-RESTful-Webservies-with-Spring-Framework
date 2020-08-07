@@ -1,0 +1,163 @@
+**************************************************************************************************
+                                        ONSJHJSA
+**************************************************************************************************
+
+==> Project structure for RESTful Webservices.
+
+-> Create Spring Initializer project. Provide appropriate groupID, ArtifactID (all lower case).
+-> Select "Web" in dependencies as it requires web dependencies to create Spring MVC and RESTful api project.
+
+==> Create HelloWorld program:
+
+-> To Run any program on Spring Boot, RestController is needed. RestController is front controller which takes care of all the
+    web requests.
+-> Create a package "Controller" -> Java class "Hello World".
+For Eg:
+
+        @RestController
+        public class HelloWorld {
+
+            @RequestMapping("/")
+            public String getHelloWorld(){
+                return "Hello World";
+            }
+        }
+
+-> HelloWorld class should be annotated with "@RestController" annotation.
+-> Method getHelloWorld return String "Hello World".
+
+=> IMP: Method needs to map with web URL. To achieve this, Dev needs to use
+
+    @RequestMapping("/") : Here "/" represent normal URL.
+
+    [
+        In our case server start at port 8080. So our URL would be localhost:8080.
+        In my machine, port 8080 is used by other application. We can switch different port in "resources -> application.properties"
+        server.port=8084
+    ]
+
+==> Type: localhost:8084 will return Hello World.
+
+==> Dev can map URI (string at the end URL) for different requests. Dev used "/api" in @RequestMapping annotation.
+
+        @RequestMapping("/api")
+        public String getString(){
+            return "Use of URI - api";
+        }
+
+        localhost:8084/api : will return "Use of URI - api";
+
+===========================================================================================================================
+
+Create UserController.
+
+--> @RequestMapping can be defined at the class level afetr @RestController.
+
+    @RestController
+    @RequestMapping("users")        // localhost:8084/users
+    public class UserController {
+    }
+
+-> Here, Class level @RequestMapping("users") is defined. All the URLs will be localhost:8084/users
+
+        @RequestMapping(method = RequestMethod.GET,value = "/getUser")
+        public String getUser(){
+            return "Get user method is called.";
+        }
+
+=> Method getUser is creted. Annotation "@RequestMapping(method = RequestMethod.GET)" define this is GET request ( ~ Read ).
+    Value = "/getUser" is providing specific URI to access this method.
+
+    http://localhost:8084/users/getUser : This URL will return "Get user method is called."
+
+==> Simillar annotation for GETMapping :
+
+      // @RequestMapping(method = RequestMethod.GET,value = "/getUser")
+
+         @GetMapping(value = "/getU")
+         public String getUser(){
+             return "Get user method is called.";
+         }
+
+===> FOUR MAIN REQUEST MAPPING METHODS:
+
+    GET     :    Read operation.
+    POST    :    Create Operation.
+    PUT     :    Update Operation
+    DELETE  :    Delete operation.
+
+======================================================================================================================================================
+======================================================================================================================================================
+
+THERE ARE TWO WAYS TO TEST API / CHECK THE API RESULT:
+
+1. Paste API in Browser i.e Chrome. firefox etc.
+2. USE POSTMAN tool.
+
+--> Postman is the free application in which Dev can paste URL and check the result.
+--> Even, Dev can pass parameters in the URL. Response can be seen as a plain text, JSON OR XML format.
+
+======================================================================================================================================================
+======================================================================================================================================================
+
+        @PathVariable:
+
+--> To receive information of the specific user with ID = 1, userID needs to pass in URL.
+--> Fetch the value of userID passing in the URL by using @PathVariable annotation.
+
+For Eg:
+            @GetMapping(value = "/{userID}")
+            public String getUserByID(@PathVariable String userID){
+                return "The user with the user ID = " + userID;
+            }
+
+--> Here, value = "/{userID}" fetch the userID from the URL. So URL must be: "localhost:8084/users/1"
+    Dev provided userID within the URL, That userID can be use by @PathVariable and provide userID in the argument.
+
+======================================================================================================================================================
+======================================================================================================================================================
+** DIFFERENCE BETWEEN URI AND STRING PARAMETER:
+
+   localhost:8084/users?page=1&limit=10;
+
+-> Above URL, anything after URL "/.." is called URI and anything after "?" is string parameter.
+
+      URL: localhost:8084
+      URI: /users
+      String Param: page=1 & limit=10
+
+--> When user pass URI, Dev can fetch that using @PathVariable annotation. (For Eg. localhost:8084/users/1 => where 1 is userID fetch by @PathVariable)
+
+--> When user pass String Param, Dev can fetch them using "@RequestParam" annotation.
+
+     @GetMapping             //http://localhost:8084/users?page=1&limit=40
+        public String getUserByPage(@RequestParam(value = "page") int page, @RequestParam(value = "limit") int limit){
+            return "User on the page = "+ page + " with limit = " + limit;
+        }
+
+--> Here, URL passed is "http://localhost:8084/users?page=1&limit=40" with param page=1 and limit=40.
+    Annotation:  @RequestParam(value="page") fetch page number and pass as an argument.
+                 @RequestParam(value="limit") fetch limit annotation.
+
+                 RequestParam value should match the string param passed in the URL.
+
+****  REQUIRED AND OPTIONAL PARAMETERS:
+
+    Here, page and limit are required parameter. Dev can make this parameter optional as well.
+    Dev can use required = false in the @requestParam (value="name", required= false) to make them optional.
+
+    @GetMapping(value = "/optParam")                    //http://localhost:8084/users/optParam?name=Sagar&city=Denver
+        public String getUserOptionalParam(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "city", required = false) String city){
+            return "Optional Param Name = " + name + " city = " + city;
+        }
+
+ URL    :   http://localhost:8084/users/optParam?name=Sagar&city=Denver
+ Outout :   Optional Param Name = Sagar city = Denver.
+
+ ** MIMP : In case of Optional Param, when user does not provide param then null should pass.
+
+  URL    :   http://localhost:8084/users/optParam
+  Outout :   Optional Param Name = null city = null.
+
+==> But if int parameter is blank such as page & limit then User will get an error as empty int can not convert to null.
+
