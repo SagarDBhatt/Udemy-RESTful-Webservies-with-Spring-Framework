@@ -3,6 +3,8 @@ package com.onslearning.udemyrestfulwebservices.Controller;
 import com.onslearning.udemyrestfulwebservices.Entity.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
+
 @RestController
 @RequestMapping("users")        // localhost:8084/users
 public class UserController {
@@ -13,7 +15,7 @@ public class UserController {
         return "Get user method is called.";
     }
 
-    @GetMapping(value = "/{userID}")        //http://localhost:8084/users/1
+    @GetMapping(value = "/{userID}", produces = {MediaType.})        //http://localhost:8084/users/1
     public User getUserByID(@PathVariable String userID){
         User aUser = new User(Integer.parseInt(userID),"Sam", 25, 1000);
         return aUser;

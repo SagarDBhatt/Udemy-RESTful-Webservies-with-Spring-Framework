@@ -177,3 +177,25 @@ For eg:
             return aUser;
         }
 
+==> URL: http://localhost:8084/users/2
+Output : {
+             "userID": 2,
+             "userName": "Sam",
+             "age": 25,
+             "salary": 1000
+         }
+
+==> User can get URL response in JSON OR XML format. Steps to implement the response in XML format.
+
+1. In Postman, go to Headers tab. In Key column select "Content type" and value column "application/xml"
+2. In the @GetMappingAnnotation, need to define produces and MediaType. Here, I mentioned both XML and JSON file format.
+
+    @GetMapping(value = "/{userID}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION.JSON.VALUE})
+
+3. I still face an error as I need to provide Maven dependency of "JSON Dataformat XML".
+
+======================================================================================================================================================
+======================================================================================================================================================
+
+**** HTTP STATUS CODE:
+
