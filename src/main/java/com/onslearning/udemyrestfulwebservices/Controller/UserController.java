@@ -1,5 +1,6 @@
 package com.onslearning.udemyrestfulwebservices.Controller;
 
+import com.onslearning.udemyrestfulwebservices.Entity.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,8 +14,10 @@ public class UserController {
     }
 
     @GetMapping(value = "/{userID}")        //http://localhost:8084/users/1
-    public String getUserByID(@PathVariable String userID){
-        return "The user with the user ID = " + userID;
+    public User getUserByID(@PathVariable String userID){
+        User aUser = new User(Integer.parseInt(userID),"Sam", 25, 1000);
+        return aUser;
+        //return "The user with the user ID = " + userID;
     }
 
     @GetMapping             //http://localhost:8084/users?page=1&limit=40

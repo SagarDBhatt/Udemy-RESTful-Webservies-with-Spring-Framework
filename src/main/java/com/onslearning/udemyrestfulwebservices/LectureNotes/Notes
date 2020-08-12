@@ -161,3 +161,19 @@ For Eg:
 
 ==> But if int parameter is blank such as page & limit then User will get an error as empty int can not convert to null.
 
+======================================================================================================================================================
+======================================================================================================================================================
+
+**** RETURNING JAVA OBJECT AS A RETURN VALUE:
+
+--> First create a "User class" with private attributes id, name, age and salary. Generate Getters & Setters, Constuctor and toString method.
+
+=> Dev wants to return object of the class User when user pass userID in URI.
+For eg:
+
+    @GetMapping(value = "/{userID}")        //http://localhost:8084/users/1
+        public User getUserByID(@PathVariable String userID){
+            User aUser = new User(Integer.parseInt(userID),"Sam", 25, 1000);
+            return aUser;
+        }
+
