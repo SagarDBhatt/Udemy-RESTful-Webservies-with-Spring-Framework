@@ -287,4 +287,22 @@ Output : {
     userObject.setEmail(userObjectFromURL.getEmail());
     userObject.setAge(userObjectFromURL.getAge());
 
-7. I use @RequestMapping<> to return object of UserDetailModelRequest class and HttpStatus.OK 
+7. I use @RequestMapping<> to return object of UserDetailModelRequest class and HttpStatus.OK
+
+======================================================================================================================================================
+======================================================================================================================================================
+
+**** Validating User data input / JSON Payload value for POST Mapping operation.
+
+[
+    i. I have created a new class with fname, lastname, email and password private field.
+    ii. I am validating, those fields for proper email address, password field ect.
+]
+
+1. First, Use @Valid annotation inside the method argument to enable data validation.
+
+
+
+
+
+
