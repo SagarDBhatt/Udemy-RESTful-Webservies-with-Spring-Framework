@@ -93,9 +93,9 @@ public class UserController {
                 validationObject.getPassword()
         );
 
-        System.out.println(validationObject.getFirstName());
-        ResponseEntity<UserDataValidation> responseEntity = new
+        System.out.println(validationObject.getFirstName()); ResponseEntity<UserDataValidation> responseEntity = new
                 ResponseEntity<UserDataValidation>(newObject, HttpStatus.OK);
+
 
         return responseEntity;
     }

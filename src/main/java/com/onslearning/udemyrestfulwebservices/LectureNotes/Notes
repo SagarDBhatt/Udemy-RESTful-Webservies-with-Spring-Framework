@@ -297,9 +297,49 @@ Output : {
 [
     i. I have created a new class with fname, lastname, email and password private field.
     ii. I am validating, those fields for proper email address, password field ect.
+
+    Reference Link for Hibernate Bean Validation: https://howtodoinjava.com/hibernate/hibernate-validator-java-bean-validation/
 ]
 
 1. First, Use @Valid annotation inside the method argument to enable data validation.
+
+    public ResponseEntity<UserDataValidation> userValidate(@Valid @RequestBody UserDataValidation validationObject)
+
+2. In Entity class use below Bean Validation Annotation.
+    @NotNull    : Verify if the value is null.
+    @NotEmpty   : Check whether value is empty.
+    @Email      : Verify character sequence is valid email address or not.
+    @Size(min=,
+    max=)       : verify the length of character sequence. Eg: Password length must be between 8 - 20.
+
+3. In each annotation, I can provide error message in case of validation fails.
+    @Email(message="Please enter valid email address")
+    @Size(min=8,max=16,message="Please enter between 8 -16 characters")
+
+4. Create a method with @PostMapping. I put three attributes inside @PostMapping method.
+    i. value = "/validate"      : http://localhost:8084/users/validate - URL Mapped with this method.
+    ii. consumes    : Specify which format of information this method can consume. MediaType JSON or XML value.
+
+        consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+
+    iii. produces   : specify which format of information this method produces data.
+
+        produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
+
+5. @RequestBody annotation to Map Jason Payload with UserDataValidation class object.
+
+         public ResponseEntity<UserDataValidation> userValidate(@Valid @RequestBody UserDataValidation validationObject)
+
+6. @ResponseEntity(Body, HttpStatus) : Body - pass object of the class. HttpStatus - Ok (200), Bad Request(400), Bad Gateway(500)
+
+===============================================================================================
+**** MIMP :
+
+1. When sending JSON Payload. Justify below two key,value pair in Header of Request Body.
+
+         Accept  : application/json
+    Content-Type : application/json
+
 
 
 
