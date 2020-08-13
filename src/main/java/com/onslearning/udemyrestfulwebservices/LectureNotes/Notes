@@ -26,9 +26,9 @@ For Eg:
 -> HelloWorld class should be annotated with "@RestController" annotation.
 -> Method getHelloWorld return String "Hello World".
 
-=> IMP: Method needs to map with web URL. To achieve this, Dev needs to use
+=> IMP: Method needs to map wit
 
-    @RequestMapping("/") : Here "/" represent normal URL.
+    @RequestMapping("/") : Here "/" represent normal URL. web URL. To achieve this, Dev needs to use
 
     [
         In our case server start at port 8080. So our URL would be localhost:8080.
@@ -198,4 +198,42 @@ Output : {
 ======================================================================================================================================================
 
 **** HTTP STATUS CODE:
+
+    1XX     :       Informational
+    2XX     :       Success
+    3XX     :       Redirection
+    4XX     :       Client Error
+    5XX     :       Server Error
+
+-> Below example illustrate ResponseEntity<> which return Java object as a Body and HTTPStatus code.
+
+        @GetMapping(value = "/response/{uId}")
+        public ResponseEntity<User> getUserResponse(@PathVariable(value = "uId") String uID){
+            User userObject = new User(Integer.parseInt(uID), "Sagar",25, 2000);
+            ResponseEntity<User> responseEntityUser = new ResponseEntity<User>(userObject, HttpStatus.OK);
+
+            return responseEntityUser;
+        }
+
+-> ResponseEntity<> has two args. First is Body - provide object of the class. Second - HTTP Status.
+-> HTTP status could be OK(200), BadGateway(500), BadRequest(400) ect.
+
+======================================================================================================================================================
+======================================================================================================================================================
+
+**** HTTP POST METHOD:
+
+-> Post method is simillar to Create operation.
+-> Generally, User fill out a form OR sign up. During this operation, user provide name, email address, pwd.
+-> This information passed in "JSON Payload" format.
+-> Now, I need to convert JSON Payload into JAVA object to store that information.
+
+=> JSON Payload EX / format:
+
+    {
+        "firstName" : "Sagar",
+        "lastName" : "Bhatt",
+        "email" : "sam@learning.com",
+        "age" : 25,
+    }
 
