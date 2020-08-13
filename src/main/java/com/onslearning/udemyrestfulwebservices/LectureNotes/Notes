@@ -223,8 +223,9 @@ Output : {
 
 **** HTTP POST METHOD:
 
--> Post method is simillar to Create operation.
--> Generally, User fill out a form OR sign up. During this operation, user provide name, email address, pwd.
+-> Post method is similar to Create operation.
+-> Generally, User fill out an online form OR sign up.
+    During this operation, user provide name, email address, pwd.
 -> This information passed in "JSON Payload" format.
 -> Now, I need to convert JSON Payload into JAVA object to store that information.
 
@@ -237,3 +238,53 @@ Output : {
         "age" : 25,
     }
 
+==> IMP STEPS FOR POST MAPPING:
+1. @PostMapping annotation. [Alternative: @RequestMapping(method= RequestMethod.POST)]
+2. Data coming from Web is in JSON PAYLOAD format.I Need to that consume data is in JSON
+    format. This can be done as:
+    @PostMapping(
+                consumes = { MediaType = Application_JSON_Value }
+                )
+3. Method is returning object of class UserDetailModelReques using
+    ResponseEntity(object, HttpStatus.OK). I need to mention that data created
+    is in JSON format. This can be achieved by using "produced" attribute.
+
+    @PostMapping(
+            consumes = { MediaType = Application_XML_Value },
+            produces = { MediaType = Application_JSON_Value }
+                )
+
+=> [Similar way, MediaType = Application_XML_Value is used for XML type data generate or receive.]
+
+4. IMP: I need to convert JSON payload into JAVA object. To do that, I need to create a class
+        "UserDetailModelRequest". private field name should match the Json Payload.
+
+        JSON Payload:
+        {
+            "firstName" : "Sagar",
+            "lastName" : "Bhatt",
+            "email" : "A@b.com",
+            "age" : "25"
+        }
+
+        public class UserDetailModelRequest {
+            //Private field name should match the JSON Payload Entity Name ex. "firstName", "lastName", "email", "age".
+            private String firstName;
+            private String lastName;
+            private String email;
+            private String age;
+
+5. @RequestBody annotation is used to map JSON Payload with Object of class.
+
+    @PostMapping
+    public ResponseEntity<UserDetailModelRequest> creatUser(@RequestBody UserDetailModelRequest userObjectFromURL)
+
+6. Use getter method to get the object value which is JSON payload mapped value.
+
+    UserDetailModelRequest userObject = new UserDetailModelRequest();
+    userObject.setFirstName(userObjectFromURL.getFirstName());
+    userObject.setLastName(userObjectFromURL.getLastName());
+    userObject.setEmail(userObjectFromURL.getEmail());
+    userObject.setAge(userObjectFromURL.getAge());
+
+7. I use @RequestMapping<> to return object of UserDetailModelRequest class and HttpStatus.OK 
