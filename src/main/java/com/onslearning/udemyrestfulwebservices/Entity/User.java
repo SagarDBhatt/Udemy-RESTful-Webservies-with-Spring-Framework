@@ -1,12 +1,24 @@
 package com.onslearning.udemyrestfulwebservices.Entity;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class User {
-    private int userID;
+    //@NotNull(message="UserID should not be null")
+    private String userID;
+
+    @NotEmpty(message = "UserName should not be empty")
     private String userName;
+
+    @NotNull
+    //@Size(min = 1, max = 100, message = "Age must be between 1 to 100")
     private int age;
+
+    @NotNull(message = "Salary should not be empty")
     private int salary;
 
-    public int getUserID() {
+    public String getUserID() {
         return userID;
     }
 
@@ -22,7 +34,7 @@ public class User {
         return salary;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 
@@ -38,7 +50,7 @@ public class User {
         this.salary = salary;
     }
 
-    public User(int userID, String userName, int age, int salary) {
+    public User(String userID, String userName, int age, int salary) {
         this.userID = userID;
         this.userName = userName;
         this.age = age;

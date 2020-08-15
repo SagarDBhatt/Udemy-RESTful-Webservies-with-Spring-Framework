@@ -12,12 +12,18 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.condition.ConsumesRequestCondition;
 
+import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("users")        // localhost:8084/users
 public class UserController {
+
+    Map<String, User> userMap = new HashMap<String, User>();
 
     // @RequestMapping(method = RequestMethod.GET,value = "/getUser")
     @GetMapping(value = "/getUser")
@@ -27,14 +33,14 @@ public class UserController {
 
     @GetMapping(value = "/{userID}")        //http://localhost:8084/users/1
     public User getUserByID(@PathVariable String userID) {
-        User aUser = new User(Integer.parseInt(userID), "Sam", 25, 1000);
+        User aUser = new User(userID, "Sam", 25, 1000);
         return aUser;
         //return "The user with the user ID = " + userID;
     }
 
     @GetMapping(value = "/response/{uId}")
     public ResponseEntity<User> getUserResponse(@PathVariable(value = "uId") String uID) {
-        User userObject = new User(Integer.parseInt(uID), "Sagar", 25, 2000);
+        User userObject = new User(uID, "Sagar", 25, 2000);
         ResponseEntity<User> responseEntityUser = new ResponseEntity<User>(userObject, HttpStatus.OK);
 
         return responseEntityUser;
@@ -96,7 +102,46 @@ public class UserController {
         System.out.println(validationObject.getFirstName()); ResponseEntity<UserDataValidation> responseEntity = new
                 ResponseEntity<UserDataValidation>(newObject, HttpStatus.OK);
 
-
         return responseEntity;
     }
-}
+
+//3. Post request to create a USER. Temporarily Store it in Map and retrive the user details by Get request by providing ID.
+
+    @PostMapping(value = "/retrieve",
+                consumes = { MediaType.APPLICATION_JSON_VALUE },
+                produces = {MediaType.APPLICATION_JSON_VALUE})
+    public String createUserMap(@Valid @RequestBody User aUser){
+
+        String userID = UUID.randomUUID().toString();
+        User userObject = new User(userID,aUser.getUserName(),aUser.getAge(),aUser.getSalary());
+
+        userMap.put(userID,userObject);
+
+        return " User with UserID = " + userID + " added successfully!!!";
+    }
+
+//4. Retrieve User details with UserID. User details were just added.
+
+    @GetMapping(value = "/retrieve/{uid}")
+    public ResponseEntity<User> retriveUserWithUID(@PathVariable(value = "uid") String uid){
+        if(userMap.containsKey(uid)) {
+            return new ResponseEntity < User > (userMap.get(uid),HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
+
+// 5. PUT request to update User Details:
+
+    @PutMapping(value = "/{userIdWeb}",
+    consumes = {MediaType.APPLICATION_JSON_VALUE},
+    produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<User> updateUserDetails(@PathVariable(value = "userIdWeb") String userIdWeb,@RequestBody User userUpdate){
+        User updatedUser = null;
+        if(userMap.containsKey(userIdWeb)){
+            updatedUser = new User(userIdWeb, userUpdate.getUserName(),userUpdate.getAge(),userUpdate.getSalary());
+        }
+        return new ResponseEntity<User>(updatedUser,HttpStatus.OK);
+    }
+
+}//End of class UserController.
