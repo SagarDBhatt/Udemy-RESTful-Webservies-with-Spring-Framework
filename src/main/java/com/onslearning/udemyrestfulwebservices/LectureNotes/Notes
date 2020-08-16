@@ -366,5 +366,74 @@ Output : {
 3. I created a User class object, Map<String,User> to map user object as a value and UserID as a Key.
 4. I return success message that User with Randome UserID is generated successfully.
 
+5. Now, I create @GetMapping to receive the User Object that I just created. I need to pass UserID as a String Parameter and use this
+    by @PathVariable keyword. I returned the User object by using ResponseEntity<User>.
 
+        //4. Retrieve User details with UserID. User details were just added.
 
+            @GetMapping(value = "/retrieve/{uid}")
+            public ResponseEntity<User> retriveUserWithUID(@PathVariable(value = "uid") String uid) {
+                if (userMap.containsKey(uid)) {
+                    return new ResponseEntity<User>(userMap.get(uid), HttpStatus.OK);
+                } else
+                    return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+            }
+
+**** MIMP : Anytime when I need to receive (consumes) OR send (produces) data to web, I need to specify the format I am sending / receiving the data.
+
+For Eg:
+i. To receive data in JSON payload, I need to mention:
+        @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE } );
+
+ii. Simillarly, to send data in JSON payload format:
+
+        @PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE } );
+
+======================================================================================================================================================
+======================================================================================================================================================
+
+**** UPDATE USEDETAILS USING @PutMapping:
+
+1. To update user details, I need two information - i. Which user I need to update, ii. What parameters needs to update.
+2. I need to pass UserID as a PathVariable to identify which user needs to be updated.
+3. I need to pass User object in a JSON Payload to identify what fields need to updated for eg: username, age, salary ect.
+
+    // 5. PUT request to update User Details:
+
+        @PutMapping(value = "/{userIdWeb}",
+                consumes = {MediaType.APPLICATION_JSON_VALUE},
+                produces = {MediaType.APPLICATION_JSON_VALUE})
+        public ResponseEntity<User> updateUserDetails(@PathVariable(value = "userIdWeb") String userIdWeb, @RequestBody User userUpdate) {
+            User updatedUser = null;
+            if (userMap.containsKey(userIdWeb)) {
+                updatedUser = new User(userIdWeb, userUpdate.getUserName(), userUpdate.getAge(), userUpdate.getSalary());
+            }
+            return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
+        }
+
+4. I provided UserID as a String Parameter, I specify consumes and produces with MediaType JSON.
+5. I use @RequestBody annotation which Maps the JSON payload coming from URL with object of the mentioned class.
+6. I check if User contains provided UserID then update UserValue with the same UserID.
+
+======================================================================================================================================================
+======================================================================================================================================================
+
+**** DELETE USER USING @DeleteMapping:
+
+1. To delete a user, I need to provide UserID as a String Parameter.
+2. If user with passed userID available then delete that user. Else, provide error/ information message.
+
+    // 6. Delete request to delete user:
+
+        @DeleteMapping(value = "/{userID}")
+        public String deleteUser(@PathVariable(value = "userID") String userID) {
+
+            if (userMap.containsKey(userID)) {
+                userMap.remove(userID);
+                return "User with user id = " + userID + " deleted";
+            }
+            else
+                return "Unable to delete!";
+        }
+
+        
