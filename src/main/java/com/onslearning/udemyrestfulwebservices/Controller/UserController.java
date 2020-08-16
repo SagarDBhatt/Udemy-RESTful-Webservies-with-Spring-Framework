@@ -157,5 +157,15 @@ public class UserController {
             return "Unable to delete!";
     }
 
+//7. Exception Handling.
+
+    @GetMapping(value = "/exceptions")
+    public void methodThrowsException(){
+        String firstName = null;
+
+        int strLength = firstName.length(); //This line of code throws "NullPointer" Exception.
+    }
+
+
 
 }//End of class UserController.

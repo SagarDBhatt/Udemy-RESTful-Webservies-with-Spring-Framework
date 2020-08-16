@@ -436,4 +436,51 @@ ii. Simillarly, to send data in JSON payload format:
                 return "Unable to delete!";
         }
 
-        
+======================================================================================================================================================
+======================================================================================================================================================
+
+**** EXCEPTION HANDLING:
+
+1. I created a Method with @GetMapping to read data. This method throws an Exception "NullPointer".
+
+    //7. Exception Handling.
+
+        @GetMapping(value = "/exceptions")
+        public void methodThrowsException(){
+            String firstName = null;
+
+            int strLength = firstName.length(); //This line of code throws "NullPointer" Exception.
+        }
+
+2. Error Message I received from Postman when sending this URL : "http://localhost:8084/users/exceptions"
+
+    {
+        "timestamp": "2020-08-16T22:19:25.746+00:00",
+        "status": 500,
+        "error": "Internal Server Error",
+        "message": "",
+        "path": "/users/exceptions"
+    }
+
+3. Now, I need to create a new class which can handle this exception. Below are important annotations I need to use to handle Exception.
+
+i. @ControllerAdvice: The class anotated with @ControllerAdvice is listening for any exception occurring in the controller class.
+ii. @ExceptionHandler: The method which handle exception should be annotated with @ExceptionHandler (value = {Exception.class} ) annotation. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
