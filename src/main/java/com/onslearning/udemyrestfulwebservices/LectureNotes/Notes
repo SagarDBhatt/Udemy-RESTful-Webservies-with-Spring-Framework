@@ -345,8 +345,26 @@ Output : {
 
 **** Create USER via @PostMapping, STORE in MAP and GET user details by providing USERID via @GetMapping:
 
+1. Create a user using @PostMapping, provide Json payload in request. Map json payload with User class.
 
+    //3. Post request to create a USER. Temporarily Store it in Map and retrive the user details by Get request by providing ID.
 
+        @PostMapping(value = "/retrieve",
+                consumes = {MediaType.APPLICATION_JSON_VALUE},
+                produces = {MediaType.APPLICATION_JSON_VALUE})
+        public String createUserMap(@Valid @RequestBody User aUser) {
+
+            String userID = UUID.randomUUID().toString();
+            User userObject = new User(userID, aUser.getUserName(), aUser.getAge(), aUser.getSalary());
+
+            userMap.put(userID, userObject);
+
+            return " User with UserID = " + userID + " added successfully!!!";
+        }
+
+2. Json payload contains userName, age and salary. I created a UserID using UUID (universal Identifies) and Random generate UserID.
+3. I created a User class object, Map<String,User> to map user object as a value and UserID as a Key.
+4. I return success message that User with Randome UserID is generated successfully.
 
 
 
