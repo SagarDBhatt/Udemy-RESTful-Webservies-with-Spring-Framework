@@ -3,6 +3,7 @@ package com.onslearning.udemyrestfulwebservices.Controller;
 import com.onslearning.udemyrestfulwebservices.Entity.User;
 import com.onslearning.udemyrestfulwebservices.Entity.UserDataValidation;
 import com.onslearning.udemyrestfulwebservices.Entity.UserDetailModelRequest;
+import com.onslearning.udemyrestfulwebservices.ExceptionHandling.ThrowCustomException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -163,7 +164,8 @@ public class UserController {
     public void methodThrowsException(){
         String firstName = null;
 
-        int strLength = firstName.length(); //This line of code throws "NullPointer" Exception.
+        throw new ThrowCustomException("This is Custom created Exception.");
+        //int strLength = firstName.length(); //This line of code throws "NullPointer" Exception.
     }
 
 
