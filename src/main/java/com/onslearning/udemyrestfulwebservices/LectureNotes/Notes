@@ -465,9 +465,41 @@ ii. Simillarly, to send data in JSON payload format:
 3. Now, I need to create a new class which can handle this exception. Below are important annotations I need to use to handle Exception.
 
 i. @ControllerAdvice: The class anotated with @ControllerAdvice is listening for any exception occurring in the controller class.
-ii. @ExceptionHandler: The method which handle exception should be annotated with @ExceptionHandler (value = {Exception.class} ) annotation. 
+ii. @ExceptionHandler: The method which handle exception should be annotated with @ExceptionHandler (value = {Exception.class} ) annotation.
 
+4. I created a method which handles NullPointerException. I created a class "ApplicationException" annotated with @ControllerAdvice to listen for
+    any exception. I need to extend central exception class "ResponseEntityExceptionHandler".
 
+        @ControllerAdvice
+        public class ApplicationException extends ResponseEntityExceptionHandler {
+
+            @ExceptionHandler(value={NullPointerException.class})
+            public ResponseEntity<Object> catchNullPointerException(NullPointerException ex, WebRequest request){
+
+               return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+5. Method "catchNullPointerException" handle NullPointerException. This method is annotated by @ExceptionHandler(Value = { NullPointerException.class } ).
+ @ExceptionHandler enable method to catch Exception. In Value I mention NullPointerException.class, Thus this method catch NullPointer Exception.
+
+6. To develop a method which catch all the exception, I can put Exception.class as a value which catches all the exceptions.
+7. I am returning Stack Trace "ex" with HttpStatus code as a Inter Server Error (code 500).
+
+********* CREARE A CUSTOME ERROR MESSAGE:
+1. In above method, I returned the stack trace. Reading stack trace and understanding the error is quite challenging.
+2. I want to return Customized Error message So I can understand the type of error quickly.
+3. In ResponseEntity<> method, I need to pass an object of the class as a Body. So to return custom error message, I need to create
+    an object of the class which contains custome error message.
+
+4. I created a Class "CustomeErrorMessage" which has two fields Timestamp and ErrorMessage. I need to create an object of this class and pass it as
+    a bosy of ResponseEntity<Object>. [When there is no specific class to put in ResponseEntity<> generics then put "Object" class as Object is super class of
+    all the classes.]
+
+    @ExceptionHandler(value={NullPointerException.class})
+        public ResponseEntity<Object> catchNullPointerException(NullPointerException ex, WebRequest request){
+           return new ResponseEntity<>(new CustomErrorMessage(new Date(),"Null pointer Exception"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
 
 
