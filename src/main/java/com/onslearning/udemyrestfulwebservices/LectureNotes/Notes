@@ -537,8 +537,62 @@ ii. @ExceptionHandler: The method which handle exception should be annotated wit
       URL       :   http://localhost:8084/users/exceptions :
       Output    :   This is Custom created Exception.
 
+======================================================================================================================================================
+======================================================================================================================================================
 
+**** DEPENDENCY INJECTION, CREATE AN OBJECT USING DI AND @AUTOWIRED.
 
+1. I want to create an object using DI. Reason for using DI is to reduce the coupling between two classes. DI provide loosely couple
+    classes. This will allow testing of both the classes individually without depending on each other.
+2. Here, I created a @PostMapping to create a User. I am providing JSON payload as a response and @RequestBody to map the JSON payload
+    with User class object and pass as an argument.
 
+3. ***MIMP : When receiving JSON payload as a Response OR sending the ResponseEntity<>, I need to specify "consumes" & "produces" with
+    "MediaType.APPLICATION_JSON_VALUE". In Postman, I need to mention "Headers" - "Key - Accept", "Value - application/json"
+     "key - Content-Type", "Value - application/json". In Body, "raw" section provide Json Payload value.
+
+4. Now,I created a package "Service" which contains class for Dependency Injection. I created a interface "UserService" with
+    an abstract method which takes User class object from URL and return updated User object.
+
+    public interface UserService {
+        User createUserDI(User userObjectFromURL);
+    }
+
+5. I implement this interface in UserServiceImpl class and implemented/override abstract method. This class is annotated with @Service
+    which is important for the class to enable DI.
+
+    @Service
+    public class UserServiceImpl implements UserService {
+
+        @Override
+        public User createUserDI(User userObjectFromURL) {
+
+            User userDI = new User(userObjectFromURL.getUserID(), userObjectFromURL.getUserName(),
+                                    userObjectFromURL.getAge(), userObjectFromURL.getSalary());
+
+            return userDI;
+        }
+    }
+
+6. In my Controller class, I need to call createUserDI method which return updated User object. Here, to achieve loose coupling, I need to
+    use DI (i.e. I do not need to use "new" keyword to initiate an object. In DI, object will provide by spring at the time of need).
+
+7. For compiler to create an object of the class, @AutoWired annotation needs to use and user object of the class "userService" (without
+    initializing it) to call createUserDI method.
+
+    @Autowired
+    UserServiceImpl userService;
+
+    @PostMapping(value = "/dependencyInjection",
+                        consumes = {MediaType.APPLICATION_JSON_VALUE},
+                        produces = {MediaType.APPLICATION_JSON_VALUE})
+        public ResponseEntity<User> createUserDependencyInjection(@RequestBody User userObjectFromWeb){
+
+            User returnUserObject = userService.createUserDI(userObjectFromWeb);
+            return new ResponseEntity<User>(returnUserObject,HttpStatus.OK);
+        }
+
+++++++++++++++++++++++++++++++
+**** CONSTRUCTOR BASED DEPENDENCY INJECTION:
 
 

@@ -11,7 +11,8 @@ public class UserServiceImpl implements UserService {
 
         User userDI = new User(userObjectFromURL.getUserID(), userObjectFromURL.getUserName(),
                                 userObjectFromURL.getAge(), userObjectFromURL.getSalary());
-
         return userDI;
     }
+
+
 }
