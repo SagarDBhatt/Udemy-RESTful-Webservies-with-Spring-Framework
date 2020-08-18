@@ -595,4 +595,54 @@ ii. @ExceptionHandler: The method which handle exception should be annotated wit
 ++++++++++++++++++++++++++++++
 **** CONSTRUCTOR BASED DEPENDENCY INJECTION:
 
+1. Dependency Injection can be achieve in 2 ways -> i. Constructor Based DI ii. Setter Based DI.
+2. I created a class "UserServiceImpl" which has a method "createUserDI" which creat a User class object and returned.
+3. **** MIMP :
+        i. UserServiceImpl class should be annotated as "@Service"  => This class can inject object.
+        ii. "UserServiceImpl userService" => reference of the class should annotated with "@Autowired".
 
+-> These two concepts needs to be implemented in order to achieve DI.
+
+4. Now, I created a class "getUserID" which has public method "createUserID" that provides userID. As per the rule, I need to annotate
+    this class as "@Service" annotation.
+
+    @Service
+    public class getUserID {
+      public String createUserID(){
+          return UUID.randomUUID().toString();
+      }
+    }
+
+5. Now, to get the object of "getUserID" class by "Constructor Based Depenedency", I created a param constructor in "UserServiceImpl" class.
+    As per the rule, I need to annotated the Constructor as @Autowired.
+
+        getUserID userIDObject;
+        /**
+         * Constructor Based Dependency Injection.
+         */
+        @Autowired
+        public UserServiceImpl(getUserID userIDObject){
+            this.userIDObject = userIDObject;
+        }
+
+6. Now, I can utilize userIDObject to call createUserID method to get UserID.
+
+     @Override
+        public User createUserDI(User userObjectFromURL) {
+
+            User userDI = new User(userIDObject.createUserID(), userObjectFromURL.getUserName(),
+                                    userObjectFromURL.getAge(), userObjectFromURL.getSalary());
+            return userDI;
+        }
+
+7. Similarly, I can implement "Setter Based Dependency". As per the rule, I need to annotate the setUserIDObject as "@Autowired".
+
+         getUserID userIDObject;
+         /**
+             * Setter Based Dependency Injection.
+             * @param userIDObject
+             */
+            @Autowired
+            public void setUserIDObject(getUserID userIDObject) {
+                this.userIDObject = userIDObject;
+            }
