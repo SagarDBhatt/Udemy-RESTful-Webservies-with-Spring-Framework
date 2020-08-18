@@ -1,10 +1,13 @@
 package com.onslearning.udemyrestfulwebservices.Controller;
 
+import com.onslearning.udemyrestfulwebservices.DependencyInjection.UserService;
+import com.onslearning.udemyrestfulwebservices.DependencyInjection.UserServiceImpl;
 import com.onslearning.udemyrestfulwebservices.Entity.User;
 import com.onslearning.udemyrestfulwebservices.Entity.UserDataValidation;
 import com.onslearning.udemyrestfulwebservices.Entity.UserDetailModelRequest;
 import com.onslearning.udemyrestfulwebservices.ExceptionHandling.ThrowCustomException;
 import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -168,6 +171,19 @@ public class UserController {
         //int strLength = firstName.length(); //This line of code throws "NullPointer" Exception.
     }
 
+//8. Create a User from Web request (PostMapping - User Sign up to create a User). Pass JSON payload from Web request
+//   Map JSON payload with User class object. I am using Dependency Injection to create user and return object.
 
+    @Autowired
+    UserServiceImpl userService;
+
+    @PostMapping(value = "/dependencyInjection",
+                    consumes = {MediaType.APPLICATION_JSON_VALUE},
+                    produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<User> createUserDependencyInjection(@RequestBody User userObjectFromWeb){
+
+        User returnUserObject = userService.createUserDI(userObjectFromWeb);
+        return new ResponseEntity<User>(returnUserObject,HttpStatus.OK);
+    }
 
 }//End of class UserController.
